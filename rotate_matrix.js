@@ -19,6 +19,21 @@ function rotateMatrix(matrix) {
     }
   }
 }
+function rotateMatrix2(matrix) {
+  let tmp = null;
+  for (let i = 0, l = matrix.length / 2; i < l; i += 1) {
+    for (let j = i; j < matrix[i].length - i - 1; j += 1) {
+      tmp = matrix[i][j];
+      const m = matrix.length - i - 1;
+      const n = matrix.length - j - 1;
+
+      matrix[i][j] = matrix[n][i];
+      matrix[n][i] = matrix[m][n];
+      matrix[m][n] = matrix[j][m];
+      matrix[j][m] = tmp;
+    }
+  }
+}
 
 const matrix1 = [
   [5, 1, 9, 11],
@@ -50,5 +65,5 @@ const matrix5 = [
   [12, 23, 35, 32, 22, 39, 8],
 ];
 
-rotateMatrix(matrix5);
-console.log(matrix5);
+rotateMatrix2(matrix4);
+console.log(matrix4);
