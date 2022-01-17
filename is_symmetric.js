@@ -11,20 +11,57 @@
  * @param {TreeNode} root
  * @return {boolean}
  */
-// let left = null;
-// let right = null;
 const result = [];
 var isSymmetric = function (root) {
-  if (root.left) {
-    isSymmetric(root.left);
+  if (!root) {
+    return true;
   }
 
-  if (root.right) {
-    isSymmetric(root.right);
-  }
-  result.push(root.val);
-  return false;
+  return isSymmetricHelper(root.left, root.right);
 };
+
+function isSymmetricHelper(left, right) {
+  if (!left && !right) {
+    return true;
+  }
+
+  if (!left || !right || right.val !== left.val) {
+    return false;
+  }
+
+  return (
+    isSymmetricHelper(left.left, right.right) &&
+    isSymmetricHelper(left.right, right.left)
+  );
+}
+
+function isSymmetric2(root) {
+  if (root === null) {
+    return false;
+  }
+
+  const queue = [[root.left, root.right]];
+
+  while (queue.length > 0) {
+    const [left, right] = queue.pop();
+    if (!left && !right) {
+      continue;
+    }
+
+    if ((left && !right) || (!left && right)) {
+      return false;
+    }
+
+    if (left.val !== right.val) {
+      return false;
+    }
+
+    queue.push([left.left, right.right]);
+    queue.push([left.right, right.left]);
+  }
+
+  return true;
+}
 
 // 递归版本
 // -------------------------------------------------------------
