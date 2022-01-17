@@ -33,11 +33,11 @@ const result1 = [];
 function recursion_preOrderTraversal(root) {
   result1.push(root.val);
   if (root.left) {
-    traverse1(root.left);
+    recursion_preOrderTraversal(root.left);
   }
 
   if (root.right) {
-    traverse1(root.right);
+    recursion_preOrderTraversal(root.right);
   }
 }
 
@@ -45,11 +45,11 @@ function recursion_preOrderTraversal(root) {
 const result2 = [];
 function recursion_middleOrderTraversal(root) {
   if (root.left) {
-    traverse2(root.left);
+    recursion_middleOrderTraversal(root.left);
   }
   result2.push(root.val);
   if (root.right) {
-    traverse2(root.right);
+    recursion_middleOrderTraversal(root.right);
   }
 }
 
@@ -57,11 +57,11 @@ function recursion_middleOrderTraversal(root) {
 const result3 = [];
 function recursion_postOrderTraversal(root) {
   if (root.left) {
-    traverse3(root.left);
+    recursion_postOrderTraversal(root.left);
   }
 
   if (root.right) {
-    traverse3(root.right);
+    recursion_postOrderTraversal(root.right);
   }
 
   result3.push(root.val);
@@ -90,6 +90,22 @@ function preOrderTraversal(root) {
   }
 }
 
+const result41 = [];
+function preOrderTraversal1(root) {
+  const stack = [];
+  let currentNode = root;
+
+  while (currentNode || stack.length > 0) {
+    if (currentNode) {
+      stack.push(currentNode);
+      result41.push(currentNode.val);
+      currentNode = currentNode.left;
+    } else {
+      currentNode = stack.pop().right;
+    }
+  }
+}
+
 // 中序遍历
 const result5 = [];
 function middleOrderTraversal(root) {
@@ -97,12 +113,10 @@ function middleOrderTraversal(root) {
   let currentNode = root;
 
   while (stack.length > 0 || currentNode) {
-    while (currentNode) {
+    if (currentNode) {
       stack.push(currentNode);
       currentNode = currentNode.left;
-    }
-
-    if (stack.length > 0) {
+    } else {
       currentNode = stack.pop();
       result5.push(currentNode.val);
       currentNode = currentNode.right;
@@ -135,6 +149,31 @@ function postOrderTraversal(root) {
   }
 }
 
+const result7 = [];
+function postOrderTraversal1(root) {
+  const stack = [];
+  let currentNode = root;
+  let visited = root;
+  while (currentNode || stack.length > 0) {
+    if (currentNode) {
+      stack.push(currentNode);
+      currentNode = currentNode.left;
+    } else {
+      currentNode = stack[stack.length - 1];
+
+      if (!currentNode.right || visited === currentNode.right) {
+        result7.push(currentNode.val);
+        stack.pop();
+        visited = currentNode;
+        currentNode = null;
+      } else {
+        currentNode = currentNode.right;
+      }
+    }
+    console.log(stack);
+  }
+}
+
 const root = {
   val: 1,
   left: {
@@ -148,8 +187,8 @@ const root = {
     right: { val: 3, left: null, right: null },
   },
 };
-isSymmetric(root);
-console.log(result);
+// isSymmetric(root);
+// console.log(result);
 
 const root_test = {
   val: 1,
@@ -185,9 +224,14 @@ const root_test = {
 
 // preOrderTraversal(root_test);
 // console.log(result4);
+// preOrderTraversal1(root_test);
+// console.log(result41);
 
 // middleOrderTraversal(root_test);
 // console.log(result5);
 
 // postOrderTraversal(root_test);
 // console.log(result6);
+
+postOrderTraversal1(root_test);
+console.log(result7);
