@@ -51,16 +51,74 @@ var merge = function (nums1, m, nums2, n) {
 function mergeSort(nums, start, end) {
   if (start < end) {
     const mid = Math.floor((start + end) / 2);
-    mergeSort(nums, start, mid);
-    mergeSort(nums, mid + 1, end);
+    const leftArr = mergeSort(nums, start, mid);
+    const rightArr = mergeSort(nums, mid + 1, end);
 
-    mergeHelper(nums, start, mid, end);
+    const result = [];
+    let leftP = 0;
+    let rightP = 0;
+    for (let i = start; i <= end; i += 1) {
+      if (leftArr[leftP] && rightArr[rightP]) {
+        if (leftArr[leftP] <= rightArr[rightP]) {
+          result.push(leftArr[leftP]);
+          leftP++;
+        } else {
+          result.push(rightArr[rightP]);
+          rightP++;
+        }
+      } else if (leftArr[leftP]) {
+        result.push(leftArr[leftP]);
+        leftP++;
+      } else {
+        result.push(rightArr[rightP]);
+        rightP++;
+      }
+    }
+
+    return result;
+  }
+
+  return [nums[start]];
+}
+
+function quickSort(nums, low, high) {
+  if (low < high) {
+    const position = partition2(nums, low, high);
+
+    quickSort(nums, low, position - 1);
+    quickSort(nums, position + 1, high);
   }
 }
 
-function mergeHelper(nums, start, mid, end) {}
+function partition(nums, low, high) {
+  const base = nums[low];
+  while (low < high) {
+    while (low < high && nums[high] > base) {
+      high--;
+    }
 
-console.log(mergeSort([-9, 10, 2, 6, -3, 9, -2, 1]));
+    if (low < high) {
+      nums[low] = nums[high];
+    }
+
+    while (low < high && nums[low] < base) {
+      low++;
+    }
+
+    if (low < high) {
+      nums[high] = nums[low];
+    }
+  }
+
+  nums[low] = base;
+
+  return low;
+}
+
+const test = [-9, 10, 2, 6, -3, 9, -2, 1];
+// console.log(mergeSort(test, 0, test.length - 1));
+quickSort(test, 0, test.length - 1);
+console.log(test);
 // const nums1 = [1, 2, 3, 0, 0, 0];
 // merge(nums1, 3, [2, 5, 6], 3);
 // console.log(nums1);
@@ -69,6 +127,6 @@ console.log(mergeSort([-9, 10, 2, 6, -3, 9, -2, 1]));
 // merge(nums1, 1, [], 0);
 // console.log(nums1);
 
-const nums1 = [2, 0];
-merge(nums1, 1, [1], 1);
-console.log(nums1);
+// const nums1 = [2, 0];
+// merge(nums1, 1, [1], 1);
+// console.log(nums1);
